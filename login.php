@@ -26,32 +26,43 @@ if (isset($_COOKIE['problem'])){
     setcookie('problem', '', 100000);
 }
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    ?>
+    ?>		
 
 <html>
 <head>
-    <title>Web-5</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<title>Web-5</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<style type="text/css">
+	a {
+	   text-decoration: none;
+	   color: white;}
+	 a:hover {
+	 text-decoration: none; 
+	 color: white;
+	 }
+	</style>
 </head>
 <body class="bg-success">
-    <div class="jumbotron w-25 mx-auto my-5 py-2">
-        <div class="my-2">
-            <label>Login in</label>
-        </div>
-        <div>
-            <form action="" method="post">
-                <div class="my-3">
-                    <label>Login:</label>
-                    <input type="text" class="form-control" name="login" value="">
-                </div>
-                <div class="my-3">
-                    <label>Password:</label>
-                    <input name="pass" class="form-control" />
-                </div>
-                  <button type="submit" class="btn btn-success">Enter</button>
-            </form>
-        </div>
-    </div>
+	<div class="jumbotron w-25 mx-auto my-5 py-2">
+		<div class="my-2">
+			<label>Login in</label>
+		</div>
+		<div>
+			<form action="" method="post">
+				<div class="my-3">
+					<label>Login:</label>
+					<input type="text" class="form-control" name="login" value="">	
+				</div>
+				<div class="my-3">
+					<label>Password:</label>
+					<input name="pass" class="form-control" />	
+				</div>
+  				<button type="submit" class="btn btn-success">Enter</button>
+			</form>
+		</div>
+		<button class="btn btn-primary"><a href="http://u16342.kubsu-dev.ru/BackEnd6">Back</a></button>
+		<button class="btn btn-primary"><a href="http://u16342.kubsu-dev.ru/BackEnd6/admin.php">Log like admin</a></button>
+	</div>
 </body>
 </html>
 
@@ -83,6 +94,6 @@ else {
         header('Location: ./login.php');
         exit();
     }
-
+    
     header('Location: ./');
 }
