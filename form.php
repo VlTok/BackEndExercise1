@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-	<title>Web - 5</title>
+	<title>Web - 6</title>
 	<script type="text/javascript" nonce="a4cf56125c194b4892514fa3c22" src="//local.adguard.org?ts=1585150839147&amp;type=content-script&amp;dmn=u20505.kubsu-dev.ru&amp;css=1&amp;js=1&amp;gcss=1&amp;rel=1&amp;rji=1"></script>
 	<style>
 	   .error {
@@ -46,7 +46,7 @@
 				<div class="my-2">
 					<label>First Name</label>
 					<div class="col-sm-10">
-        				<input type="text" name="Name" class="form-control" <?php if ($errors['Name']) {print 'class="error"';} ?>  value=" <?php print $values['Name'];?> " />
+        				<input type="text" name="Name" class="form-control" <?php if ($errors['Name']) {print 'class="error"';} ?>  value="<?php print $values['Name'];?>" />
       				</div>
       			</div>
       			<div class="my-2">
