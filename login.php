@@ -70,20 +70,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 // Иначе, если запрос был методом POST, т.е. нужно сделать авторизацию с записью логина в сессию.
 else {
-
+    $errors=false;
+    if (!preg_match("/^[a-zA-Z0-9_\-.]+@{1}[a-zA-Z0-9.-]+\z/", $_POST['login']) or !ctype_digit($_POST['pass'])){
+        $errors = TRUE;
+    }
     $user = 'u16342';
     $pass = '7387652';
     $db = new PDO('mysql:host=localhost;dbname=u16342', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
-    try {
-        $stmt = $db->prepare("SELECT COUNT(*) as KOLVO FROM formOne WHERE EMAIL=:name AND PASS=:upass");   //добавление в базу данные
-        $stmt -> execute(array('name'=>$_POST['login'], 'upass'=>md5($_POST['pass'])));
-        $kolvo=$stmt->fetchColumn();    //узнаем кол-во подходящих логин-пароль
+    if (!$errors){
+        try {
+            $stmt = $db->prepare("SELECT COUNT(*) as KOLVO FROM formOne WHERE EMAIL=:name AND PASS=:upass");   //добавление в базу данные
+            $stmt -> execute(array('name'=>$_POST['login'], 'upass'=>md5($_POST['pass'])));
+            $kolvo=$stmt->fetchColumn();    //узнаем кол-во подходящих логин-пароль
+        }
+        catch(PDOException $e){
+            print('Error : ' . $e->getMessage());
+            exit();
+        }
     }
-    catch(PDOException $e){
-        print('Error : ' . $e->getMessage());
-        exit();
-    }
-    if ($kolvo==1){
+    if ($kolvo==1 and !$errors){
         // Если все ок, то авторизуем пользователя.
         $_SESSION['login'] = $_POST['login'];
         // Записываем ID пользователя.
