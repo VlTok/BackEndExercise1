@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-	<title>Web - 6</title>
+	<title>Web - 5</title>
 	<script type="text/javascript" nonce="a4cf56125c194b4892514fa3c22" src="//local.adguard.org?ts=1585150839147&amp;type=content-script&amp;dmn=u20505.kubsu-dev.ru&amp;css=1&amp;js=1&amp;gcss=1&amp;rel=1&amp;rji=1"></script>
 	<style>
 	   .error {
