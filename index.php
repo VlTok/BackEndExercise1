@@ -39,8 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         // Выводим сообщение.
         $messages[] = '<div class="error">Enter NAME</div>';
     }
-    $values = array();
-    $values['Name'] = empty($_COOKIE['Name_value']) ? '' : $_COOKIE['Name_value'];
     
     if ($errors['Email']) {
         // Удаляем куку, указывая время устаревания в прошлом.
@@ -48,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         // Выводим сообщение.
         $messages[] = '<div class="error">Enter email.</div>';
     }
-    $values['Email'] = empty($_COOKIE['Email_value']) ? '' : $_COOKIE['Email_value'];
     
     if ($errors['BG']) {
         // Удаляем куку, указывая время устаревания в прошлом.
@@ -56,7 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         // Выводим сообщение.
         $messages[] = '<div class="error">Enter day.</div>';
     }
-    $values['BG'] = empty($_COOKIE['BG_value']) ? '' : $_COOKIE['BG_value'];
     
     if ($errors['DD']) {
         // Удаляем куку, указывая время устаревания в прошлом.
@@ -64,7 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         // Выводим сообщение.
         $messages[] = '<div class="error">Enter day.</div>';
     }
-    $values['DD'] = empty($_COOKIE['DD_value']) ? '' : $_COOKIE['DD_value'];
     
     if ($errors['DM']) {
         // Удаляем куку, указывая время устаревания в прошлом.
@@ -72,23 +67,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         // Выводим сообщение.
         $messages[] = '<div class="error">Enter month.</div>';
     }
-    $values['DM'] = empty($_COOKIE['DM_value']) ? '' : $_COOKIE['DM_value'];
-    
     if ($errors['DY']) {
         // Удаляем куку, указывая время устаревания в прошлом.
         setcookie('DY_error', '', 100000);
         // Выводим сообщение.
         $messages[] = '<div class="error">Enter year.</div>';
     }
-    $values['DY'] = empty($_COOKIE['DY_value']) ? '' : $_COOKIE['DY_value'];
-    
     if ($errors['SP']){
         setcookie('SP_error', '', 100000);
         // Выводим сообщение.
         $messages[] = '<div class="error">Enter superpower.</div>';
     }
-    $values['SP']=array();
-    if (key_exists("SP_value",$_COOKIE)) $values['SP'] = unserialize($_COOKIE['SP_value'], ["allowed_classes" => false]);
     
     if ($errors['BG']) {
         // Удаляем куку, указывая время устаревания в прошлом.
@@ -96,17 +85,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         // Выводим сообщение.
         $messages[] = '<div class="error">Enter biography.</div>';
     }
-    $values['BG'] = empty($_COOKIE['BG_value']) ? '' : $_COOKIE['BG_value'];
-    
+   
     if ($errors['CH']) {
         setcookie('CH_error', '', 100000);
         // Выводим сообщение.
         $messages[] = '<div class="error">Enter contract.</div>';
     }
-    $values['CH'] = empty($_COOKIE['CH_value']) ? '' : $_COOKIE['CH_value'];
     
-    if (key_exists("PO_value",$_COOKIE)) $values['PO'] = $_COOKIE['PO_value']; else $values['PO'] = "MALE";
-    if (key_exists("LI_value",$_COOKIE)) $values['LI'] = $_COOKIE['LI_value']; else $values['LI'] = "0";
+    $values = array();
+    $values['SP'] = array();
+    $values['Name'] = empty($_COOKIE['Name_value']) ? '' : strip_tags($_COOKIE['Name_value']);
+    $values['Email'] = empty($_COOKIE['Email_value']) ? '' : strip_tags($_COOKIE['Email_value']);
+    $values['DD'] = empty($_COOKIE['DD_value']) ? '' : strip_tags($_COOKIE['DD_value']);
+    $values['DM'] = empty($_COOKIE['DM_value']) ? '' : strip_tags($_COOKIE['DM_value']);
+    $values['DY'] = empty($_COOKIE['DY_value']) ? '' : strip_tags($_COOKIE['DY_value']);
+    $values['BG'] = empty($_COOKIE['BG_value']) ? '' : strip_tags($_COOKIE['BG_value']);
+    $values['CH'] = empty($_COOKIE['CH_value']) ? '' : strip_tags($_COOKIE['CH_value']);
+    if (key_exists("PO_value",$_COOKIE)) $values['PO'] = strip_tags($_COOKIE['PO_value']); else $values['PO'] = "MALE";
+    if (key_exists("LI_value",$_COOKIE)) $values['LI'] = strip_tags($_COOKIE['LI_value']); else $values['LI'] = "0";
+    if (key_exists("SP_value",$_COOKIE)) $values['SP'] = unserialize($_COOKIE['SP_value'], ["allowed_classes" => false]);
     
     if (!empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
         $user = 'u16342';
@@ -117,16 +114,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $stmt = $db->prepare("SELECT NAME FROM formOne WHERE NAME=:name AND PASS=:upass");   //добавление в базу данные
             $stmt -> execute(array('name'=>$_SESSION['login'], 'upass'=>md5($_SESSION['pass'])));
             $base=$stmt->fetch();
-            print_r($base);
-            $values['SP'] = array();
-            $values['Name'] = $base['NAME'];
-            $values['Email'] = $base['EMAIL'];
-            $values['DD'] = $base['DAY'];
-            $values['DM'] = $base['MONTH'];
-            $values['DY'] = $base['YEAR'];
-            $values['BG'] = $base['BIO'];
-            $values['PO'] = $base['SEX'];
-            $values['LI'] = $base['NoL'];
+            $values['SP'] = array();    
+            $values['Name'] = strip_tags($base['NAME']);
+            $values['Email'] = strip_tags($base['EMAIL']);
+            $values['DD'] = strip_tags($base['DAY']);
+            $values['DM'] = strip_tags($base['MONTH']);
+            $values['DY'] = strip_tags($base['YEAR']);
+            $values['BG'] = strip_tags($base['BIO']);
+            $values['PO'] = strip_tags($base['SEX']);
+            $values['LI'] = strip_tags($base['NoL']);
+            $values['SP'] = strip_tags(explode(" | ",$base['SUPERPOWERS']));
         }
         catch(PDOException $e){
             print('Error : ' . $e->getMessage());
@@ -163,7 +160,7 @@ else {
     if (empty($_POST['Email'])) {
         setcookie('Email_error', '1', time() + 24 * 60 * 60);
         $errors = TRUE;
-    } else if (!preg_match("/^[a-zA-Z0-9_\-.]+@[a-z]/", $_POST['Email'])){
+    } else if (!preg_match("/^[a-zA-Z0-9_\-.]+@{1}[a-zA-Z0-9.-]+\z/", $_POST['Email'])){
         setcookie('Email_error', '2', time() + 24 * 60 * 60);
         $errors = TRUE;
     } else {
@@ -192,8 +189,10 @@ else {
     if (empty($_POST['BG'])) {
         setcookie('BG_error','1',time() + 24*60*60);
         $errors = TRUE;
-    }
-    else{
+    } else if(!preg_match("/^[^<^>]+\z/", $_POST['BG'])) {
+        setcookie('BG_error', '2', time() + 24 * 60 * 60);
+        $errors = TRUE;
+    } else{
         setcookie('BG_value', $_POST['BG'], time() + 30 * 24 * 60 * 60);
     }
     if(isset($_POST['CH']) &&
